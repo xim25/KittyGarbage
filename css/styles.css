@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css?family=VT323&subset=latin-ext');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+}
+
+body {
+  font-family: 'VT323', monospace;
+  background-color: #eee;
+  margin: 5%;
+}
+
+.side-bar{
+  display: inline-block;
+}
+
+canvas{
+  background-color: white;
+}
