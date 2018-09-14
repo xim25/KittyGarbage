@@ -1,4 +1,15 @@
-@import url('https://fonts.googleapis.com/css?family=VT323&subset=latin-ext');
+/* @import url('https://fonts.googleapis.com/css?family=VT323&subset=latin-ext'); */
+
+@font-face {
+  font-family: 'basis-grotesque-mono';
+  src: url('../tools/basis-grotesque-mono.eot');
+  src: url('../tools/basis-grotesque-mono.eot?#iefix') format('embedded-opentype'),
+       url('../tools/basis-grotesque-mono.woff') format('woff'),
+       url('../tools/basis-grotesque-mono.woff2') format('woff2'),
+       url('../tools/basis-grotesque-mono.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 *{
   margin: 0;
@@ -7,7 +18,7 @@
 }
 
 body {
-  font-family: 'VT323', monospace;
+  font-family: 'basis-grotesque-mono', monospace;
   background-color: #eee;
   margin: 5%;
 }
