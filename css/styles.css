@@ -28,5 +28,14 @@ body {
 }
 
 canvas{
+  margin-top: 75px;
   background-color: white;
+}
+
+img{
+  margin-top: 75px;
+  margin-left: 100px;
+  display: inline-block;
+  width: 434.6px;
+  height: 570px;
 }
