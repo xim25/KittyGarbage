@@ -57,8 +57,8 @@ class Office{
         ctx.fillStyle = 'white';
         ctx.fillText(`Time: ${Math.round(frames/60)}`, 50, 37);
         ctx.fillText('Score: '+ this.score, 200, 37);
-        ctx.fillText('Lives: '+ this.deadliItems, 500, 37); //Arreglar display
-        
+        ctx.fillText('Lives: '+ kitty.deadliItems, 500, 37); //Arreglar display
+  
   }
 }
 
@@ -264,21 +264,17 @@ function generateElements(){
 
 function drawElements(){
   elements.forEach(function(elem, index){
-      elem.draw();
+      
       if(kitty.collision(elem)){
-        if(elem.type === "organic") office.score += 1;
+        if(elem.type === "organic") office.score += 5;
         if(elem.type === "inorganic"){
-          if(kitty.deadliItems < 0) clearInterval(interval);
+          if(kitty.deadliItems <= 1) clearInterval(interval);
           kitty.deadliItems -= 1;
+          office.draw();
         }
         elements.splice(index, 1);
-          if(kitty.deadliItems < 0) {
-            ctx.font = '80px basis-grotesque-mono';
-            ctx.fillStyle = 'white';
-            ctx.fillText("Bye");
-          }
       };
-      //Función game over
+          elem.draw();
       })
 }
 
@@ -286,29 +282,28 @@ function drawElements(){
 
 //Events
 addEventListener("keydown", function(e){
-  if(e.keyCode === 32){
-      kitty.y -= 150;
-      // if(kitty.x <= canvas.width - kitty.width*4) kitty.x += kitty.width;
-  }
-
-  if(e.keyCode === 39 && kitty.x < canvas.width - kitty.width*4){
-      office.x -= 20;
-      kitty.x += 20;
-      kitty.image.src = "./img/kitty.png";
-}
+  // if(e.keyCode === 32 && kitty.y >= 200){
+  //     kitty.y -= 150;
+  //     // if(kitty.x <= canvas.width - kitty.width*4) kitty.x += kitty.width;
+  // }
 
   if(e.keyCode === 37 && kitty.x > 0){
-    kitty.x -= 20;
     kitty.image.src = "./img/kitty_left.png";
 }
 
+if(e.keyCode === 38 && kitty.y >= 200){
+  kitty.y -= 75;
+  // if(kitty.x <= canvas.width - kitty.width*4) kitty.x += kitty.width;
+}
+  
 
-  if(e.keyCode === 39 && kitty.x === canvas.width - kitty.width*4){
-    office.x--;
-  }
+  if(e.keyCode === 39){
+      kitty.image.src = "./img/kitty.png";
+}
 
-  if(kitty.x >= canvas.width - kitty.width*4){
-    office.x -= 20;
-  }
+if(e.keyCode === 40 && kitty.y >= 200){
+  kitty.y += 75;
+  // if(kitty.x <= canvas.width - kitty.width*4) kitty.x += kitty.width;
+}
 
 })
