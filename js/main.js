@@ -3,6 +3,8 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var interval;
 var frames = 0;
+var elements = [];
+var items = ["apple", "bottle", "banana", "chicken", "cup", "box"];
 var garbage = { 
   apple: './img/apple.png',
   banana: './img/banana.png',
@@ -22,6 +24,7 @@ var garbage = {
 var audios = {
   back: './audio/back.mp3',
   win: './audio/winner.mp3',
+  over: './audio/over.mp3'
 };
 
 var audioBack = new Audio();
@@ -32,6 +35,9 @@ var audioWin = new Audio();
 audioWin.src = audios.win;
 audioWin.loop = false; 
 
+var audioOver = new Audio();
+audioOver.src = audios.over;
+audioOver.loop = false; 
 
 //Classes 
 class Office{
@@ -204,21 +210,80 @@ var office = new Office();
 var kitty = new Kitty();
 
 
-var interval = setInterval(function(){
-    frames++;
-    office.draw();
+// var interval = setInterval(function(){
+//     frames++;
+//     office.draw();
+//     kitty.draw();
+//     generateElements();
+//     drawElements();
+//     gotKitten();
+//     gameOver();
+// }, 1000/60);
+
+
+//Helpers
+
+function start(){
+  interval = setInterval(update, 1000/60)
+}
+
+function update(){
+  frames++;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  office.draw();
     kitty.draw();
     generateElements();
     drawElements();
     gotKitten();
-}, 1000/60);
+    gameOver();
+}
 
+function gameOver(){
+  if(kitty.deadliItems < 1) {
+  audioBack.pause();
+  audioOver.play();
+  clearInterval(interval);
+  interval = undefined;
+  office.draw();
+  ctx.font = '100px basis-grotesque-mono';
+    ctx.fillStyle = 'white';
+    ctx.fillText("Loser!", 235, 250);
+    ctx.font = '30px basis-grotesque-mono';
+    ctx.fillStyle = 'white';
+    ctx.fillText("PRESS R TO PLAY AGAIN", 220, 300);
+  }
+}
 
-//Functions
+function gotKitten(){
+  if(office.score == 555){
+    audioBack.pause();
+    audioWin.play();
+    office.draw();
+    clearInterval(interval);
+    ctx.font = '100px basis-grotesque-mono';
+    ctx.fillStyle = 'white';
+    ctx.fillText("Winner!", 210, 250);
+    ctx.font = '30px basis-grotesque-mono';
+    ctx.fillStyle = 'white';
+    ctx.fillText("PRESS R TO PLAY AGAIN", 220, 300);
+    
+  }
+}
 
-var elements = [];
-
-var items = ["apple", "bottle", "banana", "chicken", "cup", "box"];
+function drawElements(){
+  elements.forEach(function(elem, index){
+      
+      if(kitty.collision(elem)){
+        if(elem.type === "organic") office.score += 55.5;
+        if(elem.type === "inorganic"){
+          kitty.deadliItems -= 1;
+          office.draw();
+        }
+        elements.splice(index, 1);
+      };
+          elem.draw();
+      })
+}
 
 function generateElements(){
   if(frames % 50 === 0 || frames % 500 === 0 || frames % 1000 === 0){
@@ -260,38 +325,11 @@ function generateElements(){
   }
 }
 
-
-function drawElements(){
-  elements.forEach(function(elem, index){
-      
-      if(kitty.collision(elem)){
-        if(elem.type === "organic") office.score += 55.5;
-        if(elem.type === "inorganic"){
-          if(kitty.deadliItems <= 1) clearInterval(interval);
-          kitty.deadliItems -= 1;
-          office.draw();
-        }
-        elements.splice(index, 1);
-      };
-          elem.draw();
-      })
-}
-
-function gotKitten(){
-  if(office.score == 555){
-    audioBack.pause();
-    audioWin.play();
-    office.draw();
-    clearInterval(interval);
-    ctx.font = '100px basis-grotesque-mono';
-    ctx.fillStyle = 'white';
-    ctx.fillText("Winner!", 210, 250);
-    ctx.font = '30px basis-grotesque-mono';
-    ctx.fillStyle = 'white';
-    ctx.fillText("PRESS R TO PLAY AGAIN", 220, 300);
-    
-  }
-}
+// function restart(){
+//     elements = [];
+//     frames = 0;
+//     start();
+// }
 
 
 //Events
@@ -316,3 +354,5 @@ if(e.keyCode === 82){
 }
 
 })
+
+start();
