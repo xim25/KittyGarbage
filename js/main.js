@@ -48,7 +48,7 @@ class Office{
     this.width = canvas.width;
     this.height = canvas.height;
     this.image = new Image();
-    this.image.src = "./img/Fondo.png";
+    this.image.src = "./img/Fondo.jpg";
     this.score = 0;
     }
   
@@ -75,11 +75,11 @@ class Kitty{
 
   constructor(){
     this.x = 50;
-    this.y = 480;
-    this.width = 99;
-    this.height = 77;
+    this.y = 240;
+    this.width = 120;
+    this.height = 85;
     this.image = new Image();
-    this.image.src = "./img/kitty.png";
+    this.image.src = "./img/kitty1.png";
     this.deadliItems = 3;
   }
 
@@ -91,8 +91,7 @@ class Kitty{
 }
 
   draw(){
-        if(this.y < 490) this.y += 4;
-        if(frames % 10 === 0 ) this.image;
+        if(this.y < 470) this.y += 4;
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   }
 }
