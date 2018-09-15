@@ -1,12 +1,8 @@
 //Variables
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-
-
-
+var interval;
 var frames = 0;
-var score = [];
-
 var garbage = { 
   apple: './img/apple.png',
   banana: './img/banana.png',
@@ -131,7 +127,6 @@ class Banana{
   }
 }
 
-
 class Chicken{
 
   constructor(y){
@@ -150,9 +145,6 @@ class Chicken{
   }
 }
 
-
-
-
 class Bottle{
 
   constructor(y){
@@ -170,7 +162,6 @@ class Bottle{
     ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
   }
 }
-
 
 class Cup{
 
@@ -208,7 +199,7 @@ class Box{
   }
 }
 
-
+//Instances
 var office = new Office();
 var kitty = new Kitty();
 
@@ -289,11 +280,15 @@ function drawElements(){
 function gotKitten(){
   if(office.score == 555){
     audioBack.pause();
-    clearInterval(interval);
     audioWin.play();
+    office.draw();
+    clearInterval(interval);
     ctx.font = '100px basis-grotesque-mono';
     ctx.fillStyle = 'white';
-    ctx.fillText("Winner!", 230, 250);
+    ctx.fillText("Winner!", 210, 250);
+    ctx.font = '30px basis-grotesque-mono';
+    ctx.fillStyle = 'white';
+    ctx.fillText("PRESS R TO PLAY AGAIN", 220, 300);
     
   }
 }
@@ -302,21 +297,10 @@ function gotKitten(){
 //Events
 
 addEventListener("keydown", function(e){
-  // if(e.keyCode === 32 && kitty.y >= 200){
-  //     kitty.y -= 150;
-  //     // if(kitty.x <= canvas.width - kitty.width*4) kitty.x += kitty.width;
-  // }
-
-if(e.keyCode === 38 && kitty.y >= 200){
-  kitty.y -= 75;
-  // if(kitty.x <= canvas.width - kitty.width*4) kitty.x += kitty.width;
-}
-  
-
-if(e.keyCode === 40 && kitty.y >= 480){
-  kitty.y += 75;
-  // if(kitty.x <= canvas.width - kitty.width*4) kitty.x += kitty.width;
-}
+  if(e.keyCode === 32 && kitty.y >= 200){
+      kitty.y -= 150;
+      // if(kitty.x <= canvas.width - kitty.width*4) kitty.x += kitty.width;
+  }
 
 if(e.keyCode === 83){
   audioBack.play();
@@ -325,6 +309,10 @@ if(e.keyCode === 83){
 if(e.keyCode === 87){
   audioBack.pause();
   audioWin.play();
+}
+
+if(e.keyCode === 82){
+  restart();
 }
 
 })
