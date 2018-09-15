@@ -25,12 +25,19 @@ var garbage = {
 
 var audios = {
   back: './audio/back.mp3',
-  win: './audio/dientes.mp3',
-  organic: './audio/organic.mp3',
-  inorganic: './audio/inorganic.mp3'
+  win: './audio/winner.mp3',
 };
 
-//Classes ****Faltan animaciones****
+var audioBack = new Audio();
+audioBack.src = audios.back;
+audioBack.loop = true; 
+
+var audioWin = new Audio();
+audioWin.src = audios.win;
+audioWin.loop = false; 
+
+
+//Classes 
 class Office{
 
   constructor(){
@@ -57,8 +64,8 @@ class Office{
         ctx.fillStyle = 'white';
         ctx.fillText(`Time: ${Math.round(frames/60)}`, 50, 37);
         ctx.fillText('Score: '+ this.score, 200, 37);
-        ctx.fillText('Lives: '+ kitty.deadliItems, 500, 37); //Arreglar display
-  
+        ctx.fillText('Lives: '+ kitty.deadliItems, 500, 37); 
+        
   }
 }
 
@@ -212,6 +219,7 @@ var interval = setInterval(function(){
     kitty.draw();
     generateElements();
     drawElements();
+    gotKitten();
 }, 1000/60);
 
 
@@ -227,7 +235,6 @@ function generateElements(){
     let type = items[Math.floor((Math.random() * 6))]
     let item;
 
-    // completar los cases
     switch (type) {
       case "apple":
         item = new Apple(altura);
@@ -256,17 +263,18 @@ function generateElements(){
     
       default:
         return;
-        break;
+
     }
     elements.push(item);
   }
 }
 
+
 function drawElements(){
   elements.forEach(function(elem, index){
       
       if(kitty.collision(elem)){
-        if(elem.type === "organic") office.score += 5;
+        if(elem.type === "organic") office.score += 55.5;
         if(elem.type === "inorganic"){
           if(kitty.deadliItems <= 1) clearInterval(interval);
           kitty.deadliItems -= 1;
@@ -278,18 +286,26 @@ function drawElements(){
       })
 }
 
+function gotKitten(){
+  if(office.score == 555){
+    audioBack.pause();
+    clearInterval(interval);
+    audioWin.play();
+    ctx.font = '100px basis-grotesque-mono';
+    ctx.fillStyle = 'white';
+    ctx.fillText("Winner!", 230, 250);
+    
+  }
+}
 
 
 //Events
+
 addEventListener("keydown", function(e){
   // if(e.keyCode === 32 && kitty.y >= 200){
   //     kitty.y -= 150;
   //     // if(kitty.x <= canvas.width - kitty.width*4) kitty.x += kitty.width;
   // }
-
-  if(e.keyCode === 37 && kitty.x > 0){
-    kitty.image.src = "./img/kitty_left.png";
-}
 
 if(e.keyCode === 38 && kitty.y >= 200){
   kitty.y -= 75;
@@ -297,13 +313,18 @@ if(e.keyCode === 38 && kitty.y >= 200){
 }
   
 
-  if(e.keyCode === 39){
-      kitty.image.src = "./img/kitty.png";
-}
-
-if(e.keyCode === 40 && kitty.y >= 200){
+if(e.keyCode === 40 && kitty.y >= 480){
   kitty.y += 75;
   // if(kitty.x <= canvas.width - kitty.width*4) kitty.x += kitty.width;
+}
+
+if(e.keyCode === 83){
+  audioBack.play();
+}
+
+if(e.keyCode === 87){
+  audioBack.pause();
+  audioWin.play();
 }
 
 })
